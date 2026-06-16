@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { MapPin, Mail, Phone, Send } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const ContactSection = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
@@ -35,24 +36,17 @@ const ContactSection = () => {
     }
 
     try {
-      const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-      const newSubmission = {
-        ...formData,
-        timestamp: new Date().toISOString()
-      };
-      submissions.push(newSubmission);
-      localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert([formData]);
+
+      if (error) throw error;
 
       toast.success('Pesan Anda telah terkirim. Kami akan segera menghubungi Anda.');
-      
-      setFormData({
-        nama: '',
-        email: '',
-        telepon: '',
-        pesan: ''
-      });
+      setFormData({ nama: '', email: '', telepon: '', pesan: '' });
     } catch (error) {
       toast.error('Terjadi kesalahan. Silakan coba lagi.');
+      console.error(error);
     } finally {
       setIsSubmitting(false);
     }
