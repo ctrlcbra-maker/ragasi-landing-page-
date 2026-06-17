@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./dist/apps/web/
-          server-dir: /public_html/
+          server-dir: /
           protocol: ftp
           log-level: verbose
-          state-name: .ftp-state-v2
+          state-name: .ftp-state-v3
