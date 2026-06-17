@@ -96,6 +96,12 @@ jobs:
                       ftp.storbinary(f'STOR {remote_file}', f)
                   count += 1
 
+          # Write a visible test file to confirm FTP writes to correct location
+          import io, time
+          test_content = f"FTP deploy berhasil pada: {time.strftime('%Y-%m-%d %H:%M:%S UTC')}".encode()
+          ftp.storbinary('STOR ftp-deploy-test.txt', io.BytesIO(test_content))
+          print("Wrote ftp-deploy-test.txt for verification")
+
           ftp.quit()
           print(f"Done! {count} files uploaded.")
           PYEOF
