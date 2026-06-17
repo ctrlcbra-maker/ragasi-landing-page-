@@ -53,11 +53,8 @@ jobs:
           print(f"FTP root dir  : {cwd}")
           print(f"FTP contents  : {listing}")
 
-          if 'public_html' in listing:
-              ftp.cwd('public_html')
-              print(f"Navigated into public_html -> {ftp.pwd()}")
-          else:
-              print("public_html not found at root, FTP likely jailed -> uploading here")
+          # Hostinger FTP is jailed to /public_html — upload directly, no navigation needed
+          print(f"Uploading directly to FTP root (web root): {cwd}")
 
           def ensure_dir(ftp, path):
               try:
