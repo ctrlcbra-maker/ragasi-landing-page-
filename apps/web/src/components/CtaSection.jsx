@@ -29,7 +29,7 @@ const CtaSection = () => {
         >
           <h2 className="text-white mb-6">Siap Membangun Kemitraan yang Sukses?</h2>
           <p className="text-primary-foreground/80 text-lg mb-10 max-w-2xl mx-auto">
-            Mari diskusikan bagaimana RAGASI GRUP dapat menjadi mitra strategis untuk pertumbuhan bisnis Anda di masa depan.
+            Mari diskusikan bagaimana RAGASI CORPORATION GRUP dapat menjadi mitra strategis untuk pertumbuhan bisnis Anda di masa depan.
           </p>
           <Button
             onClick={() => handleScrollTo('#kontak')}

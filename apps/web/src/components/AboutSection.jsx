@@ -54,9 +54,9 @@ const AboutSection = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-primary mb-6">Tentang RAGASI GRUP</h2>
+            <h2 className="text-primary mb-6">Tentang RAGASI CORPORATION GRUP</h2>
             <p className="text-lg text-muted-foreground mb-6">
-              Sebagai perusahaan induk yang solid, RAGASI GRUP berfokus pada pertumbuhan berkelanjutan melalui diversifikasi portofolio bisnis yang strategis. Kami hadir untuk memberikan nilai tambah bagi masyarakat dan pemangku kepentingan.
+              Sebagai perusahaan induk yang solid, RAGASI CORPORATION GRUP berfokus pada pertumbuhan berkelanjutan melalui diversifikasi portofolio bisnis yang strategis. Kami hadir untuk memberikan nilai tambah bagi masyarakat dan pemangku kepentingan.
             </p>
             <p className="text-lg text-muted-foreground">
               Dengan pengalaman bertahun-tahun, kami terus memperkuat fondasi di berbagai sektor industri, memastikan setiap lini bisnis beroperasi dengan standar keunggulan yang sama.

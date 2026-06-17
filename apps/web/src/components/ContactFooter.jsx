@@ -119,7 +119,7 @@ const ContactFooter = () => {
             <div>
               <div className="mb-10">
                 <span className="text-3xl font-bold text-white mb-4 block" style={{ fontFamily: 'Playfair Display, serif' }}>
-                  RAGASI GRUP
+                  RAGASI CORPORATION GRUP
                 </span>
                 <p className="text-white/70 max-w-md">
                   Mitra terpercaya untuk pertumbuhan bisnis yang berkelanjutan dan inovatif.
@@ -173,7 +173,7 @@ const ContactFooter = () => {
         </div>
 
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-white/50 text-sm">
-          <p>© 2026 RAGASI GRUP. All rights reserved.</p>
+          <p>© 2026 RAGASI CORPORATION GRUP. All rights reserved.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-white transition-colors">Terms of Service</a>

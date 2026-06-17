@@ -14,10 +14,10 @@ function App() {
   return (
     <>
       <Helmet>
-        <title>RAGASI GRUP - Holding Company Terpercaya</title>
+        <title>RAGASI CORPORATION GRUP - Holding Company Terpercaya</title>
         <meta
           name="description"
-          content="RAGASI GRUP menaungi berbagai lini bisnis strategis dengan komitmen penuh terhadap kualitas, inovasi, dan pertumbuhan yang berkelanjutan."
+          content="RAGASI CORPORATION GRUP menaungi berbagai lini bisnis strategis dengan komitmen penuh terhadap kualitas, inovasi, dan pertumbuhan yang berkelanjutan."
         />
       </Helmet>
 

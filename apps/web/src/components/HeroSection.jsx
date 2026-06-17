@@ -43,7 +43,7 @@ const HeroSection = () => {
             Holding Company Terpercaya
           </span>
           <h1 className="text-white mb-6">
-            Membangun Masa Depan<br />Bersama <span className="text-accent">RAGASI GRUP</span>
+            Membangun Masa Depan<br />Bersama <span className="text-accent">RAGASI CORPORATION GRUP</span>
           </h1>
           <p className="text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto font-light">
             Menaungi berbagai lini bisnis strategis dengan komitmen penuh terhadap kualitas, inovasi, dan pertumbuhan yang berkelanjutan.

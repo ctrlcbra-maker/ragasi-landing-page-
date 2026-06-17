@@ -46,9 +46,11 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           <a href="#beranda" onClick={(e) => handleNavClick(e, '#beranda')} className="flex items-center">
-            <span className={`text-2xl font-bold transition-colors duration-300 ${isScrolled ? 'text-primary' : 'text-white'}`} style={{ fontFamily: 'Playfair Display, serif' }}>
-              RAGASI GRUP
-            </span>
+            <img
+              src="/logo.png"
+              alt="RAGASI CORPORATION GRUP"
+              className="h-12 w-auto transition-all duration-300"
+            />
           </a>
 
           <nav className="hidden md:flex items-center space-x-8">
