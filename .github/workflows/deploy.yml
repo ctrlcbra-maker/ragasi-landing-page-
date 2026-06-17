@@ -36,25 +36,45 @@ jobs:
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
           python3 - << 'PYEOF'
-          import ftplib, os, sys
+          import ftplib, os, time
 
           host = os.environ['FTP_HOST']
           user = os.environ['FTP_USER']
           password = os.environ['FTP_PASS']
           local_dir = 'dist/apps/web'
 
-          print(f"Connecting to: {host}")
-          ftp = ftplib.FTP()
-          ftp.connect(host, 21, timeout=60)
-          ftp.login(user, password)
+          # Retry connection up to 3 times
+          ftp = None
+          for attempt in range(1, 4):
+              try:
+                  print(f"Connecting (attempt {attempt}/3) to: {host}")
+                  ftp = ftplib.FTP()
+                  ftp.connect(host, 21, timeout=30)
+                  ftp.login(user, password)
+                  print("Connected!")
+                  break
+              except Exception as e:
+                  print(f"Attempt {attempt} failed: {e}")
+                  ftp = None
+                  if attempt < 3:
+                      time.sleep(10)
+
+          if ftp is None:
+              raise Exception("Could not connect after 3 attempts")
 
           cwd = ftp.pwd()
           listing = ftp.nlst()
           print(f"FTP root dir  : {cwd}")
           print(f"FTP contents  : {listing}")
 
-          # Hostinger FTP is jailed to /public_html — upload directly, no navigation needed
-          print(f"Uploading directly to FTP root (web root): {cwd}")
+          # Smart navigation:
+          # - If 'public_html' is in listing AND we're NOT already inside it -> navigate in
+          # - If we're already inside public_html (jailed) -> upload directly
+          if 'public_html' in listing and not cwd.rstrip('/').endswith('public_html'):
+              ftp.cwd('public_html')
+              print(f"Navigated into public_html -> {ftp.pwd()}")
+          else:
+              print(f"Already at web root, uploading here: {cwd}")
 
           def ensure_dir(ftp, path):
               try:
