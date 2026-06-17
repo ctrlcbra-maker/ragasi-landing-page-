@@ -37,7 +37,10 @@ jobs:
         run: |
           sudo apt-get install -y lftp
           HOST="${FTP_HOST#ftp://}"
-          printf 'machine %s login %s password %s\n' "$HOST" "$FTP_USER" "$FTP_PASS" > ~/.netrc
+          HOST="${HOST#ftps://}"
+          HOST="${HOST%/}"
+          printf 'machine %s\nlogin %s\npassword %s\n' "$HOST" "$FTP_USER" "$FTP_PASS" > ~/.netrc
           chmod 600 ~/.netrc
-          lftp -e "set ssl:verify-certificate no; set net:timeout 60; set net:max-retries 3; open ftp://$HOST; mirror --reverse --delete ./dist/apps/web/ /public_html/; quit"
+          echo "Connecting to: $HOST"
+          lftp -e "set ftp:ssl-force yes; set ssl:verify-certificate no; set net:timeout 60; set net:max-retries 3; open ftp://$HOST; mirror --reverse --delete ./dist/apps/web/ /public_html/; quit"
           rm -f ~/.netrc
