@@ -39,3 +39,4 @@ jobs:
           server-dir: /public_html/
           protocol: ftp
           log-level: verbose
+          state-name: .ftp-state-v2
