@@ -30,17 +30,11 @@ jobs:
         run: npm run build --prefix apps/web
 
       - name: Deploy via FTP
-        env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_USER: ${{ secrets.FTP_USERNAME }}
-          FTP_PASS: ${{ secrets.FTP_PASSWORD }}
-        run: |
-          sudo apt-get install -y lftp
-          HOST="${FTP_HOST#ftp://}"
-          HOST="${HOST#ftps://}"
-          HOST="${HOST%/}"
-          printf 'machine %s\nlogin %s\npassword %s\n' "$HOST" "$FTP_USER" "$FTP_PASS" > ~/.netrc
-          chmod 600 ~/.netrc
-          echo "Connecting to: $HOST"
-          lftp -e "set ftp:ssl-force yes; set ssl:verify-certificate no; set net:timeout 60; set net:max-retries 3; open ftp://$HOST; mirror --reverse --delete ./dist/apps/web/ /public_html/; quit"
-          rm -f ~/.netrc
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/apps/web/
+          server-dir: public_html/
+          protocol: ftp
