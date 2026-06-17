@@ -29,28 +29,56 @@ jobs:
           VITE_SUPABASE_PUBLISHABLE_KEY: ${{ secrets.VITE_SUPABASE_PUBLISHABLE_KEY }}
         run: npm run build --prefix apps/web
 
-      - name: Verify build output
-        run: |
-          echo "=== Files in dist/apps/web/ ==="
-          find dist/apps/web -type f
-          echo "=== index.html head ==="
-          head -5 dist/apps/web/index.html
-
-      - name: Deploy via FTP (curl)
+      - name: Deploy via FTP
         env:
           FTP_HOST: ${{ secrets.FTP_HOST }}
           FTP_USER: ${{ secrets.FTP_USERNAME }}
           FTP_PASS: ${{ secrets.FTP_PASSWORD }}
         run: |
-          cd dist/apps/web
+          python3 - << 'PYEOF'
+          import ftplib, os, sys
 
-          find . -type f | while IFS= read -r file; do
-            file="${file#./}"
-            echo "Uploading: $file"
-            curl --silent --show-error --ftp-create-dirs \
-              --user "${FTP_USER}:${FTP_PASS}" \
-              -T "$file" \
-              "ftp://${FTP_HOST}/public_html/${file}"
-          done
+          host = os.environ['FTP_HOST']
+          user = os.environ['FTP_USER']
+          password = os.environ['FTP_PASS']
+          local_dir = 'dist/apps/web'
 
-          echo "=== Deploy selesai! ==="
+          print(f"Connecting to: {host}")
+          ftp = ftplib.FTP()
+          ftp.connect(host, 21, timeout=60)
+          ftp.login(user, password)
+
+          cwd = ftp.pwd()
+          listing = ftp.nlst()
+          print(f"FTP root dir  : {cwd}")
+          print(f"FTP contents  : {listing}")
+
+          if 'public_html' in listing:
+              ftp.cwd('public_html')
+              print(f"Navigated into public_html -> {ftp.pwd()}")
+          else:
+              print("public_html not found at root, FTP likely jailed -> uploading here")
+
+          def ensure_dir(ftp, path):
+              try:
+                  ftp.mkd(path)
+              except ftplib.error_perm:
+                  pass
+
+          count = 0
+          for root, dirs, files in os.walk(local_dir):
+              rel_root = os.path.relpath(root, local_dir)
+              if rel_root != '.':
+                  remote_dir = rel_root.replace(os.sep, '/')
+                  ensure_dir(ftp, remote_dir)
+              for fname in files:
+                  local_file = os.path.join(root, fname)
+                  remote_file = fname if rel_root == '.' else rel_root.replace(os.sep, '/') + '/' + fname
+                  print(f"  Uploading: {remote_file}")
+                  with open(local_file, 'rb') as f:
+                      ftp.storbinary(f'STOR {remote_file}', f)
+                  count += 1
+
+          ftp.quit()
+          print(f"Done! {count} files uploaded.")
+          PYEOF
